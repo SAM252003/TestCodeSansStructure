@@ -14,13 +14,10 @@ class ConversationSummaryBufferMessageHistory(BaseChatMessageHistory, BaseModel)
         super().__init__(llm=llm, k=k)
 
     def add_messages(self, messages: list[BaseMessage]) -> None:
-        """Add messages to the history, removing any messages beyond
-        the last `k` messages and summarizing the messages that we
-        drop.
-        """
+
         existing_summary = None
         old_messages = None
-        # see if we already have a summary message
+
         if len(self.messages) > 0 and isinstance(self.messages[0], SystemMessage):
 
             existing_summary: str | None = self.messages.pop(0)
@@ -28,9 +25,6 @@ class ConversationSummaryBufferMessageHistory(BaseChatMessageHistory, BaseModel)
         self.messages.extend(messages)
         # check if we have too many messages
         if len(self.messages) > self.k:
-            print(
-                f">> Found {len(self.messages)} messages, dropping "
-                f"latest {len(self.messages) - self.k} messages.")
             # pull out the oldest messages...
             old_messages = self.messages[:self.k]
             # ...and keep only the most recent messages
@@ -59,7 +53,6 @@ class ConversationSummaryBufferMessageHistory(BaseChatMessageHistory, BaseModel)
                 old_messages=old_messages
             )
         )
-        print(f">> New summary: {new_summary.content}")
         # prepend the new summary to the history
         self.messages = [SystemMessage(content=new_summary.content)] + self.messages
 
