@@ -7,11 +7,7 @@ from langchain.prompts import (
 )
 from langchain.chains import LLMChain
 
-# Environnement LangSmith
-os.environ["LANGCHAIN_API_KEY"] = "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"
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-os.environ["LANGCHAIN_PROJECT"] = "Projet"
+
 
 # Modèle
 model_name = "llama3.2:1b-instruct-fp16"
